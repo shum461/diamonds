@@ -44,8 +44,8 @@ diamonds |>
 #| fig-width: 10
 #| fig-height: 6
 
-diamonds |>
-  ggplot(aes(x = cut, y = price, fill = cut)) +
+diamonds |>  
+  ggplot(aes(x = cut, y = price, fill = cut)) + 
   geom_boxplot(alpha = 0.7) +
   scale_y_continuous(labels = scales::dollar_format()) +
   labs(
@@ -66,6 +66,8 @@ diamonds |>
 #| fig-cap: "Strong positive relationship between carat weight and price"
 #| fig-width: 10
 #| fig-height: 7
+
+
 
 diamonds |>
   ggplot(aes(x = carat, y = price, color = cut)) +
