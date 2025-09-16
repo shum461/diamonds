@@ -1,0 +1,90 @@
+---
+title: "Diamond Price Analysis"
+author: "Your Name"
+date: today
+format: html
+editor: visual
+---
+
+## Diamond Dataset Analysis
+
+This analysis explores the diamonds dataset from ggplot2, examining the relationship between diamond characteristics and price.
+
+```{r}
+#| label: setup
+#| include: false
+
+library(ggplot2)
+library(dplyr)
+```
+
+## Dataset Overview
+
+The diamonds dataset contains information about `r nrow(diamonds)` diamonds with `r ncol(diamonds)` variables including carat, cut, color, clarity, and price.
+
+```{r}
+#| label: data-summary
+#| echo: false
+
+# Basic summary statistics
+diamonds |>
+  summarise(
+    avg_price = mean(price),
+    median_price = median(price),
+    avg_carat = mean(carat),
+    n_diamonds = n()
+  )
+```
+
+## Price Distribution by Cut Quality
+
+```{r}
+#| label: price-by-cut
+#| fig-cap: "Diamond price distribution varies significantly by cut quality"
+#| fig-width: 10
+#| fig-height: 6
+
+diamonds |>
+  ggplot(aes(x = cut, y = price, fill = cut)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  labs(
+    title = "Diamond Price Distribution by Cut Quality",
+    subtitle = "Higher cut grades don't always mean higher prices",
+    x = "Cut Quality",
+    y = "Price (USD)",
+    fill = "Cut Quality"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## Carat vs Price Relationship
+
+```{r}
+#| label: carat-price-scatter
+#| fig-cap: "Strong positive relationship between carat weight and price"
+#| fig-width: 10
+#| fig-height: 7
+
+diamonds |>
+  ggplot(aes(x = carat, y = price, color = cut)) +
+  geom_point(alpha = 0.4, size = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_viridis_d(name = "Cut Quality") +
+  labs(
+    title = "Diamond Price vs Carat Weight",
+    subtitle = "Relationship varies by cut quality",
+    x = "Carat Weight",
+    y = "Price (USD)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+## Key Findings
+
+-   The relationship between cut quality and price is counterintuitive - Fair cut diamonds often have higher prices than Premium cuts
+-   Carat weight shows a strong positive correlation with price across all cut qualities
+-   Price variance increases significantly with carat weight, suggesting other factors become more influential for larger diamonds
